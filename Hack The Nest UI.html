@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigilant | Contextual Threat Detector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://rsms.me/inter/inter.css');
+        .active-tab {
+            border-color: #0d9488; /* teal-600 */
+            color: #0d9488;
+            background-color: #f0fdfa; /* teal-50 */
+        }
+        .console {
+            background-color: #1c1917; /* stone-900 */
+            color: #f5f5f4; /* stone-100 */
+            font-family: 'Courier New', Courier, monospace;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .static-glowing-orb {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            opacity: 0.5;
+            z-index: -1;
+            box-shadow:
+                inset 0 0 50px #fff,
+                inset 20px 0 80px #f0f,
+                inset -20px 0 80px #0ff,
+                inset 20px 0 300px #f0f,
+                inset -20px 0 300px #0ff,
+                0 0 50px #fff,
+                -10px 0 80px #f0f,
+                10px 0 80px #0ff;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-900 text-stone-300">
+
+    <div class="static-glowing-orb"></div>
+    <div class="static-glowing-orb"></div>
+
+    <div class="static-glowing-orb" style="top: 10%; left: 10%; transform: translate(-50%, -50%); width: 250px; height: 250px; opacity: 0.3;"></div>
+
+    <div class="static-glowing-orb" style="top: 80%; left: 90%; transform: translate(-50%, -50%); width: 700px; height: 200px; opacity: 0.2;"></div>
+
+    <div class="static-glowing-orb" style="top: 70%; left: 20%; transform: translate(-50%, -50%); width: 150px; height: 150px; opacity: 0.6;"></div>
+    <header class="bg-transparent sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-2xl text-teal-600">🛡️ Vigilant</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="text-white hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium">The Problem</a>
+                        <a href="#solution" class="text-white hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium">How It Works</a>
+                        <a href="#demo" class="text-white hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium">Interactive Demo</a>
+                        <a href="#impact" class="text-white hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium">Impact</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight">
+                    Putting every word under the microscope.
+                </h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-white">
+                    Vigilant is a defensive tool that goes beyond traditional security by analyzing the <span class="font-semibold text-teal-600">context</span> of conversations and code to find insider threats hidden in plain sight.
+                </p>
+            </div>
+        </section>
+
+        <section id="problem" class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white">The Blind Spot in Modern Security</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-white">
+                        Traditional tools are great at finding structured data leaks (like credit card numbers), but they miss the subtle, contextual threats that arise in everyday unstructured communication like emails or direct chats.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-stone-800 p-6 rounded-lg shadow-md border border-red-200">
+                        <h3 class="font-bold text-xl text-red-600 flex items-center">
+                            <span class="text-2xl mr-2">❌</span> Traditional Tools
+                        </h3>
+                        <p class="text-white mt-2 mb-4">A keyword like "password" alone might trigger a low-priority alert, but the critical context is overlooked.</p>
+                        <div class="bg-stone-50 p-4 rounded-md">
+                            <p class="font-mono text-sm text-black"><span class="text-blue-600 font-bold">dev_user:</span> Hey, did you see the notes for Project Jupiter?</p>
+                            <p class="font-mono text-sm mt-2 text-black"><span class="text-green-600 font-bold">prod_admin:</span> Yeah, the new password for the test database is in the readme.</p>
+                        </div>
+                        <p class="mt-4 font-semibold text-red-500">Result: Critical leak likely missed or buried in alert fatigue.</p>
+                    </div>
+                    <div class="bg-stone-800 p-6 rounded-lg shadow-md border border-green-200">
+                        <h3 class="font-bold text-xl text-green-600 flex items-center">
+                            <span class="text-2xl mr-2">✅</span> Vigilant
+                        </h3>
+                        <p class="text-white mt-2 mb-4">By combining keywords and analyzing textual references, Vigilant understands the context and flags the conversation as a high-risk insider threat.</p>
+                        <div class="bg-stone-50 p-4 rounded-md relative">
+                            <div class="absolute inset-0 bg-teal-500 opacity-20 rounded-md ring-2 ring-teal-600"></div>
+                            <p class="font-mono text-sm text-black"><span class="text-blue-600 font-bold">dev_user:</span> Hey, did you see the notes for <span class="bg-yellow-200 font-bold rounded px-1">Project Jupiter</span>?</p>
+                            <p class="font-mono text-sm mt-2 text-black"><span class="text-green-600 font-bold">prod_admin:</span> Yeah, the new <span class="bg-yellow-200 font-bold rounded px-1">password</span> for the test database is in the readme.</p>
+                        </div>
+                        <p class="mt-4 font-semibold text-green-600">Result: High-priority, contextual threat identified and reported.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-20 bg-stone-800">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white">How It Works: A 5-Step Process</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-white">
+                        Vigilant uses a simple yet powerful workflow to scan, analyze, and report on potential threats. Click each step to learn more.
+                    </p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex md:flex-col justify-between md:justify-start md:w-1/4">
+                        <button data-tab="1" class="solution-tab active-tab text-left p-4 rounded-lg border-2 border-transparent font-semibold transition">1. Configuration</button>
+                        <button data-tab="2" class="solution-tab text-left p-4 rounded-lg border-2 border-transparent font-semibold transition mt-0 md:mt-4">2. File Ingestion</button>
+                        <button data-tab="3" class="solution-tab text-left p-4 rounded-lg border-2 border-transparent font-semibold transition mt-0 md:mt-4">3. NLP Analysis</button>
+                        <button data-tab="4" class="solution-tab text-left p-4 rounded-lg border-2 border-transparent font-semibold transition mt-0 md:mt-4">4. Risk Scoring</button>
+                        <button data-tab="5" class="solution-tab text-left p-4 rounded-lg border-2 border-transparent font-semibold transition mt-0 md:mt-4">5. Reporting</button>
+                    </div>
+                    <div class="md:w-3/4 bg-stone-50 p-8 rounded-lg">
+                        <div id="tab-content-1" class="tab-content">
+                            <h3 class="text-2xl font-bold text-teal-600">Configuration</h3>
+                            <p class="mt-2 text-black">Everything starts with a simple `config.json` file. Here, security teams define what's sensitive to their organization. This includes lists of confidential project names, high-risk technical terms (like "production server" or "private key"), and general confidential keywords (like passwords, usernames, dates). This flexibility allows Vigilant to be tailored to any environment and adjusted at any time.</p>
+                        </div>
+                        <div id="tab-content-2" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-teal-600">File Ingestion</h3>
+                            <p class="mt-2 text-black">Vigilant is pointed at a directory containing unstructured data. It recursively scans for all relevant files (such as, `.txt`, `.md`, `.py`), reading their content into memory for analysis. This process is designed to be lightweight and can be targeted at specific repositories, such as email messages, internal wikis, and chat log exports.</p>
+                        </div>
+                        <div id="tab-content-3" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-teal-600">NLP Analysis</h3>
+                            <p class="mt-2 text-black">Natural Language Processing is the core of Vigilant. Using the `spaCy` library, the tool breaks down the text from each file into individual sentences. It then analyzes each sentence to check for the co-occurrence of terms defined in the configuration file. It's not just looking for one keyword, but also for the combinations of keywords, such as sensitive project name and a high-risk term within the same sentence.</p>
+                        </div>
+                        <div id="tab-content-4" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-teal-600">Risk Scoring</h3>
+                            <p class="mt-2 text-black">Every potential leak is scored using the Common Vulnerability Scoring System. The score is a universal framework that rates security vulnerabilities. A sentence containing a project name and a highly confidential term like "password" will receive a much higher score than one that just mentions a project name. This helps teams prioritize the most critical findings first and allows for threat resolution.</p>
+                        </div>
+                         <div id="tab-content-5" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-teal-600">Reporting</h3>
+                            <p class="mt-2 text-black">The final output is a clean, human-readable report generated in the console that's assigned a CVSS score 0-10, with 10 being the most severe threats. It lists every identified potential leak, including the file path, the exact sentence where the leak was found, the calculated risk score, and the specific terms that were matched. This provides security analysts with all the context they need to investigate further.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="demo" class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white">Interactive Demo</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-white">
+                        Experience Vigilant in action. We've set up mock test cases and configurations. Click "Run Scan" to see what threats each scenario uncovers.
+                    </p>
+                </div>
+
+                <div class="bg-stone-800 p-8 rounded-lg shadow-lg">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                        <div class="lg:col-span-1">
+                            <div class="mb-4 flex border-b">
+                                <button id="tab-files" class="flex-1 py-2 text-center font-semibold text-teal-600 border-b-2 border-teal-600">📄 Test Cases</button>
+                                <button id="tab-config" class="flex-1 py-2 text-center font-semibold text-white hover:text-teal-600">⚙️ Config</button>
+                            </div>
+
+                            <!-- Files Tab -->
+                            <div id="files-panel">
+                                <h4 class="font-bold mb-2">Test Cases</h4>
+                                <div id="file-tree" class="bg-stone-50 p-3 rounded-md h-full">
+                                    <ul class="space-y-1">
+                                        <li><a href="#" class="file-item font-mono text-sm text-stone-700 hover:bg-teal-100 block p-1 rounded" data-file="dev_notes">/docs/dev_notes.md</a></li>
+                                        <li><a href="#" class="file-item font-mono text-sm text-stone-700 hover:bg-teal-100 block p-1 rounded" data-file="chat_log">/logs/chat_log.txt</a></li>
+                                        <li><a href="#" class="file-item font-mono text-sm text-stone-700 hover:bg-teal-100 block p-1 rounded" data-file="main_py">/src/main.py</a></li>
+                                        <li><a href="#" class="file-item font-mono text-sm text-stone-700 hover:bg-teal-100 block p-1 rounded" data-file="readme">/src/README.md</a></li>
+                                        <li><a href="#" class="file-item font-mono text-sm text-stone-700 hover:bg-teal-100 block p-1 rounded" data-file="find_users_sql">/sql/finduser.sql</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Config Tab -->
+                            <div id="config-panel" class="hidden">
+                                <h4 class="font-bold mb-2">⚙️ Config.json Editor</h4>
+                                <div class="bg-stone-50 p-3 rounded-md h-full space-y-4">
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-black">Project Names</label>
+                                        <textarea id="config-projects" class="w-full p-2 border rounded text-black" rows="3"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-black">Confidential Terms</label>
+                                        <textarea id="config-confidential" class="w-full p-2 border rounded  text-black" rows="3"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block font-semibold mb-1 text-black">High Risk Terms</label>
+                                        <textarea id="config-highrisk" class="w-full p-2 border rounded  text-black" rows="3"></textarea>
+                                    </div>
+                                    <button id="save-config" class="w-full bg-teal-600 text-white py-2 rounded hover:bg-teal-700">💾 Save Config</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2">
+                             <h4 class="font-bold mb-2">📂 Scenario</h4>
+                            <div id="file-content-viewer" class="console h-full p-4 rounded-md text-sm">
+                                Select a test case to view each scenario.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button id="run-scan-btn" class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition flex items-center justify-center">
+                            <svg class="animate-spin h-5 w-5 mr-3 hidden" id="scanner-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span id="scanner-text">Run Scan</span>
+                        </button>
+                    </div>
+
+                    <div class="mt-6">
+                         <h4 class="font-bold mb-2">🖥️ Scan Report Output</h4>
+                        <div id="report-output" class="console p-4 rounded-md">
+                            Scan results will appear here...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="scoring" class="py-20 bg-transparent">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white">Understanding Risk Scores</h2>
+                    <p class="mt-2 max-w-2xl mx-auto text-white">
+                       The risk index represents how much of a threat is posed by the source. See how different combinations of keywords affect the index.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <div class="bg-transparent p-6 rounded-lg">
+                            <h4 class="font-semibold text-lg text-white">Build a Leak Scenario:</h4>
+                            <div class="mt-4 space-y-3" id="scoring-options">
+                                <label class="flex items-center">
+                                    <input type="checkbox" data-score="10" class="h-5 w-5 rounded border-gray-300 text-white focus:ring-teal-500">
+                                    <span class="ml-3 text-white">Contains a "Project Name"</span>
+                                </label>
+                                 <label class="flex items-center">
+                                    <input type="checkbox" data-score="15" class="h-5 w-5 rounded border-gray-300 text-white focus:ring-teal-500">
+                                    <span class="ml-3 text-white">Contains a "High Risk Term" (e.g., launch date)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" data-score="25" class="h-5 w-5 rounded border-gray-300 text-white focus:ring-teal-500">
+                                    <span class="ml-3 text-white">Contains a "Confidential Term" (e.g., password)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" data-score="30" class="h-5 w-5 rounded text-white focus:ring-teal-500">
+                                    <span class="ml-3 text-white">Error in message recipient" (e.g, sent to wrong address)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-lg text-white">Common Vulnerability Score</p>
+                        <p id="risk-score-display" class="text-7xl font-extrabold text-white my-4">0</p>
+                        <p id="risk-level-display" class="text-xl font-bold text-white">No Risk</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold text-white">Real-World Impact and Future</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-white">
+                    Vigilant is a back-end service for a company's internal network which would integrate with corporate communication platforms and code repositories through their official APIs. Vigilant provides a crucial, early-warning system against insider threats stemming from unstructured data or uneducated employees. By meticulously analyzing each input it helps protect intellectual property and prevent data breaches before they happen.
+                </p>
+                <div class="mt-10">
+                    <a href="#" class="bg-teal-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-teal-700 transition">
+                        More on this project coming soon!
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-stone-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <p>Created by Rishi Seshadri, Ben Wang, Gavril Tefferi, Ishanth Thota</p>
+        </div>
+    </footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const solutionTabs = document.querySelectorAll('.solution-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    solutionTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabId = tab.dataset.tab;
+
+            solutionTabs.forEach(t => t.classList.remove('active-tab'));
+            tab.classList.add('active-tab');
+
+            tabContents.forEach(content => {
+                if (content.id === `tab-content-${tabId}`) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    });
+
+    const mockFileSystem = {
+        dev_notes: `# Developer Notes - Project Phoenix
+- The new authentication API is almost ready.
+- Still need to fix the bug related to customer data caching.
+- Remember: this entire module is confidential until the public announcement.`,
+        chat_log: `[10:32] Alice: Hey, I pushed the latest code for the Apollo Initiative.
+[10:33] Bob: Great. Is the production server IP still the same?
+[10:33] Alice: Yep. It's stable.`,
+        main_py: `import os
+
+
+# TODO: This is a temporary solution for Project Jupiter
+# The secret key needs to be moved to a vault.
+API_SECRET_KEY = "temp_secret_12345"
+
+
+`,
+        find_users_sql: `import sqlite3
+
+def find_user(db_path, username, password):
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    query = f"SELECT id, username FROM users WHERE username = '{username}' AND password = '{password}'"
+    cur.execute(query)
+    user = cur.fetchone()
+    conn.close()
+    return user
+
+print(find_user("example.db", "alice", "secret"))
+
+
+`,
+        readme: `# Project Jupiter README
+This project contains the core logic for the new processing pipeline.
+The password for the staging database is 'admin123'. This is internal only info.`
+    };
+
+    const mockConfig = {
+        sensitive_terms: {
+            project_names: ["Project Jupiter", "Apollo Initiative", "Project Phoenix"],
+            confidential_terms: ["confidential", "proprietary", "internal only", "private key", "secret", "password"],
+            high_risk_terms: ["launch date", "production server", "customer data", "roadmap", "source code"]
+        }
+    };
+    const tabFiles = document.getElementById('tab-files');
+    const tabConfig = document.getElementById('tab-config');
+    const filesPanel = document.getElementById('files-panel');
+    const configPanel = document.getElementById('config-panel');
+
+    tabFiles.addEventListener('click', () => {
+        tabFiles.classList.add('text-teal-600', 'border-teal-600');
+        tabConfig.classList.remove('text-teal-600', 'border-teal-600');
+        filesPanel.classList.remove('hidden');
+        configPanel.classList.add('hidden');
+    });
+
+    tabConfig.addEventListener('click', () => {
+        tabConfig.classList.add('text-teal-600', 'border-teal-600');
+        tabFiles.classList.remove('text-teal-600', 'border-teal-600');
+        configPanel.classList.remove('hidden');
+        filesPanel.classList.add('hidden');
+
+        // preload current config
+        document.getElementById('config-projects').value = mockConfig.sensitive_terms.project_names.join(", ");
+        document.getElementById('config-confidential').value = mockConfig.sensitive_terms.confidential_terms.join(", ");
+        document.getElementById('config-highrisk').value = mockConfig.sensitive_terms.high_risk_terms.join(", ");
+    });
+
+    document.getElementById('save-config').addEventListener('click', () => {
+    mockConfig.sensitive_terms.project_names = document.getElementById('config-projects').value.split(",").map(s => s.trim()).filter(Boolean);
+    mockConfig.sensitive_terms.confidential_terms = document.getElementById('config-confidential').value.split(",").map(s => s.trim()).filter(Boolean);
+    mockConfig.sensitive_terms.high_risk_terms = document.getElementById('config-highrisk').value.split(",").map(s => s.trim()).filter(Boolean);
+
+    alert("✅ Config updated! Now run the scan again.");
+    });
+
+    const fileItems = document.querySelectorAll('.file-item');
+    const fileViewer = document.getElementById('file-content-viewer');
+
+    fileItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            fileItems.forEach(i => i.classList.remove('bg-teal-100', 'font-bold'));
+            item.classList.add('bg-teal-100', 'font-bold');
+            const fileKey = item.dataset.file;
+            fileViewer.textContent = mockFileSystem[fileKey];
+        });
+    });
+
+    const runScanBtn = document.getElementById('run-scan-btn');
+    const reportOutput = document.getElementById('report-output');
+    const scannerSpinner = document.getElementById('scanner-spinner');
+    const scannerText = document.getElementById('scanner-text');
+
+    runScanBtn.addEventListener('click', () => {
+        scannerSpinner.classList.remove('hidden');
+        scannerText.textContent = 'Scanning...';
+        runScanBtn.disabled = true;
+        reportOutput.textContent = 'Analyzing files...';
+
+        setTimeout(() => {
+            const report = generateReport();
+            reportOutput.innerHTML = report;
+            scannerSpinner.classList.add('hidden');
+            scannerText.textContent = 'Run Scan Again';
+            runScanBtn.disabled = false;
+        }, 2000);
+    });
+
+    function generateReport() {
+        let output = `<span class="text-green-400">INFO: Scan complete.</span>\n\n`;
+        output += `==================================================\n`;
+        output += `           Vigilant Scan Report           \n`;
+        output += `==================================================\n\n`;
+
+        let leaksFound = false;
+
+        Object.entries(mockFileSystem).forEach(([key, content]) => {
+            const filePath = document.querySelector(`.file-item[data-file="${key}"]`).textContent;
+            const sentences = content.match(/[^.!?]+[.!?]+/g) || [content];
+            let fileLeaks = [];
+
+            sentences.forEach(sent => {
+                let score = 0;
+                let matches = { project_names: [], confidential_terms: [], high_risk_terms: [] };
+
+                const foundProjectNames = mockConfig.sensitive_terms.project_names.filter(term => sent.toLowerCase().includes(term.toLowerCase()));
+                const foundConfidentialTerms = mockConfig.sensitive_terms.confidential_terms.filter(term => sent.toLowerCase().includes(term.toLowerCase()));
+                const foundHighRiskTerms = mockConfig.sensitive_terms.high_risk_terms.filter(term => sent.toLowerCase().includes(term.toLowerCase()));
+
+                if (foundProjectNames.length > 0) {
+                    score += foundProjectNames.length * 10;
+                    matches.project_names = foundProjectNames;
+                    if (foundConfidentialTerms.length > 0) {
+                        score += foundConfidentialTerms.length * 20;
+                        matches.confidential_terms = foundConfidentialTerms;
+                    }
+                    if (foundHighRiskTerms.length > 0) {
+                        score += foundHighRiskTerms.length * 15;
+                        matches.high_risk_terms = foundHighRiskTerms;
+                    }
+                }
+
+                if (score > 0) {
+                    fileLeaks.push({ score, sentence: sent.trim(), matches });
+                }
+            });
+
+            if (fileLeaks.length > 0) {
+                leaksFound = true;
+                output += `<span class="text-yellow-400">[!] Detected potential leaks in: ${filePath}</span>\n`;
+                fileLeaks.forEach(leak => {
+                    output += `--------------------------------------------------\n`;
+                    output += `  <span class="font-bold">Risk Score: ${leak.score}</span>\n`;
+                    output += `  <span class="text-stone-300">Sentence: "${highlightTerms(leak.sentence, leak.matches)}"</span>\n`;
+                });
+                output += `\n`;
+            }
+        });
+
+        if (!leaksFound) {
+            output += `<span class="text-green-400">No potential contextual leaks detected. You are secure!</span>\n`;
+        }
+
+        return output;
+    }
+
+    function highlightTerms(sentence, matches) {
+        let highlightedSentence = sentence;
+        const allTerms = [...matches.project_names, ...matches.confidential_terms, ...matches.high_risk_terms];
+        allTerms.forEach(term => {
+            const regex = new RegExp(`(${term})`, 'gi');
+            highlightedSentence = highlightedSentence.replace(regex, `<span class="bg-yellow-400 text-black rounded px-1">$1</span>`);
+        });
+        return highlightedSentence;
+    }
+
+    const scoringOptions = document.getElementById('scoring-options');
+    const scoreDisplay = document.getElementById('risk-score-display');
+    const levelDisplay = document.getElementById('risk-level-display');
+
+    scoringOptions.addEventListener('change', () => {
+        let totalScore = 0;
+        const checkboxes = scoringOptions.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(box => {
+            if (box.checked) {
+                totalScore += parseInt(box.dataset.score);
+            }
+        });
+        scoreDisplay.textContent = totalScore;
+
+        if (totalScore >= 45) {
+            levelDisplay.textContent = "Critical Risk";
+            levelDisplay.className = "text-xl font-bold text-red-600";
+        } else if (totalScore >= 25) {
+            levelDisplay.textContent = "High Risk";
+            levelDisplay.className = "text-xl font-bold text-orange-500";
+        } else if (totalScore > 0) {
+            levelDisplay.textContent = "Medium Risk";
+            levelDisplay.className = "text-xl font-bold text-yellow-500";
+        } else {
+            levelDisplay.textContent = "No Risk";
+            levelDisplay.className = "text-xl font-bold text-stone-500";
+        }
+    });
+
+});
+</script>
+</body>
+</html>
